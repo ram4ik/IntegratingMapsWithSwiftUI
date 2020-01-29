@@ -9,10 +9,10 @@
 import Foundation
 import MapKit
 
-class LocationManager: NSObject {
+class LocationManager: NSObject, ObservableObject {
     
     private let locationManager = CLLocationManager()
-    var location: CLLocation? = nil
+    @Published var location: CLLocation? = nil
     
     override init() {
         super.init()
@@ -26,4 +26,12 @@ class LocationManager: NSObject {
 
 extension LocationManager: CLLocationManagerDelegate {
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        guard let location = locations.last else {
+            return
+        }
+        
+        self.location = location
+    }
 }
