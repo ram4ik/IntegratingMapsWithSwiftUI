@@ -12,6 +12,20 @@ import MapKit
 struct ContentView: View {
     
     @ObservedObject private var locationManager = LocationManager()
+    @State private var search: String = ""
+    
+    private func getNearByLandmarks() {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = self.search
+        
+        let search = MKLocalSearch(request: request)
+        search.start { (response, error) in
+            if let response = response {
+                let mapItems = response.mapItems
+                print(mapItems)
+            }
+        }
+    }
     
     var body: some View {
         
@@ -20,6 +34,15 @@ struct ContentView: View {
         return ZStack {
             MapView().edgesIgnoringSafeArea(.all)
             VStack {
+                TextField("Search", text: self.$search, onEditingChanged: {
+                    _ in
+                }) {
+                    // comit
+                    self.getNearByLandmarks()
+                }
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+                
                 Spacer()
                 Text("\(coordinate.latitude), \(coordinate.longitude)")
                     .foregroundColor(Color.white)
