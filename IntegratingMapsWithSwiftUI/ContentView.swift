@@ -42,6 +42,7 @@ struct ContentView: View {
                 }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+                .padding(.horizontal, 30)
                 
                 Spacer()
                 Text("\(coordinate.latitude), \(coordinate.longitude)")
